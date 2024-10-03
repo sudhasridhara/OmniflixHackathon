@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="display-4">{{.Title}}</h1>
+                <p class="lead">{{.Content}}</p>
+            </div>
+            <div>
+            <a class="btn btn-primary" href="#" role="button" id="btnConnectWallet">Connect Wallet</a>
+            <br/>
+            <label id="lblConnectWallet" style="color:red;display: none;";>Connect to Wallet to proceed further</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Left Navigation -->
+            <nav class="col-md-3 sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="ShowHideDiv('divLanding')">Home</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="ShowHideDiv('divUpcomingevents')">Upcoming Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowHideDiv('divpastevents')">Past Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowHideDiv('divregistration')">Create an Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowHideDiv('divResale')">Resell</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content Section -->
+            <main class="col-md-9">
+                <div class="container">
+                    <div class="row" id="divLanding">
+                        <div class="col-12 mb-3">
+                            <h2>Main Content</h2>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <p>This app is used to 
+                                <ul>
+                                    <li>
+                                        Check for upcoming events and purchase a ticket
+                                    </li>
+                                    <li>
+                                        Verify the past events
+                                    </li>
+                                    <li>
+                                        Register a new event to the system
+                                    </li>
+                                    <li>
+                                        Resale your ticket
+                                    </li>
+                                </ul></p>
+                        </div>
+                        
+                    </div>
+                    <div id="divUpcomingevents" class="row mt-5">
+                        <div class="col-12 mb-3">
+                            <h2>Upcoming Events</h2>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <p id="noUpcomingEvents">No Upcoming events to show</p>
+                        </div>
+                        <table id="tblUpcomingEvents" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Location</th>
+                                    <th>Organizer</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>No of Tickets Left</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-upcomingEvents">
+                                <!-- Dynamic rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="divpastevents" class="row mt-5">
+                        <div class="col-12 mb-3">
+                            <h2>Past Events</h2>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <p id="noPastEvents">No Past Events to show</p>
+                        </div>
+                        
+                        <table id="tblPastEvents" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Location</th>
+                                    <th>Organizer</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>No of Tickets Left</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-pastEvents">
+                                <!-- Dynamic rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="divregistration" class="row">
+                        <div class="col-md-12">
+                            <h3>Event Registration</h3>
+                            <form id="registrationForm">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="name">Event Name:</label>
+                                        <input type="text" class="event form-control" id="name" required>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="description">Event Description:</label>
+                                        <textarea class="form-control event" id="description" rows="4" required></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="startDate">Start Date:</label>
+                                        <input type="date" class="form-control event" id="startDate" required>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-6">
+                                        <label for="endDate">End Date:</label>
+                                        <input type="date" class="form-control event" id="endDate" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="location">Location:</label>
+                                        <input type="text" class="form-control event" id="location">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="location">Organizer:</label>
+                                        <input type="text" class="form-control event" id="organizer">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="ticketsCount">No Of Tickets:</label>
+                                        <input type="number" class="form-control event" id="ticketsCount" min="1">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="price">Price in (token):</label>
+                                        <input type="number" class="form-control event" id="price" min="0" step="0.01">
+                                    </div>
+                                    <div class="form-group col-md-6" style="display: none;">
+                                        <label for="eventId">Event Id:</label>
+                                        <input type="text" class="form-control event" id="eventId">
+                                    </div>
+                       
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary" id="registerEventButton">Register Event</button>
+                                        <button type="submit" style="display: none;" class="btn btn-primary" id="btnPurchaseTicket">Purchase Ticket</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="divResale" class="row">
+                        <div class="col-12 mb-3" >
+                            <h2>Your Registered Events</h2>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <p id="noRegisteredEvents">No registered events to show</p>
+                        </div>
+                        
+                        <div class="col-md-12">
+                           
+                            <table id="tblResale" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Event Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Location</th>
+                                        <th>Organizer</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="registeredEventsTableBody">
+                                    <!-- Dynamic rows will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12"  id="resaleForm" style="display: none;">
+                            <h4>Resell Ticket</h4>
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="eventName">Event Name:</label>
+                                        <input type="text" class="form-control" id="eventName" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="amount">Amount:</label>
+                                        <input type="number" class="form-control" id="resellAmount" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="purchaserAddress">Purchaser Address:</label>
+                                        <input type="text" class="form-control" id="purchaserAddress" required>
+                                    </div>
+                                    <div class="form-group col-md-6" style="display:none">
+                                        <label for="amount">Event Id:</label>
+                                        <input type="number" class="form-control" id="ticketEventId"  required>
+                                    </div>
+                                    <div class="form-group col-md-6" style="display:none">
+                                        <label for="amount">Ticket Id:</label>
+                                        <input type="number" class="form-control" id="ticketId"  required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="btnResellTicket">Resell Ticket</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </main>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies (optional, for components like modals) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <script>
+        var offlineSigner;
+        var accounts;
+        var upcomingEvents;
+        var pastEvents;
+        var tickets;
+        $(document).ready(function() {
+            // Fetch data and populate the table
+            ShowHideDiv('divLanding');
+            UpcomingEvents();
+        });
+
+        function GetEvent(eventId){
+            const eventData = {
+                   Id: eventId
+                };
+            fetch('/get-event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(eventData), // Send as JSON
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Assume the server returns a JSON response
+            })
+            .then(eventData => {
+                console.log('Success:', eventData);
+                document.getElementById('name').value = eventData.event.eventName;
+                document.getElementById('description').value = eventData.event.eventDescription;
+                const startDate = new Date(eventData.event.startDate);
+                document.getElementById('startDate').value = startDate.toISOString().split('T')[0];
+                const endDate = new Date(eventData.event.endDate);
+                document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+                document.getElementById('location').value = eventData.event.location;
+                document.getElementById('ticketsCount').value = eventData.event.numFtTickets;
+                document.getElementById('price').value = eventData.event.ticketPrice;
+                document.getElementById('organizer').value = eventData.event.organizer;
+                document.getElementById('eventId').value = eventData.event.id == undefined ? 0 : eventData.event.id; // Make sure to add this field in your HTML if necessary
+
+                // Optionally, show the registration form or hide other sections    
+                $(".event").prop('disabled', true);
+                document.getElementById('divregistration').style.display = 'block'; 
+                $("#registerEventButton").hide();
+                $("#btnPurchaseTicket").show();
+                // Handle the response (e.g., show a success message, update UI)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+
+        }
+        
+        function UpcomingEvents(){
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); 
+       
+            $.ajax({
+                url: '/upcomingEvents',
+                method: 'GET',
+                success: function(data) {
+                    if(data.event == null){
+                        $('#tblUpcomingEvents').hide();
+                        $('#noUpcomingEvents').show();
+                        $('#tblPastEvents').hide();
+                        $('#noPastEvents').show();
+                        
+                    }
+                    else{
+                    
+                        upcomingEvents = data.event.filter(event => {
+                            const eventDate = new Date(event.startDate);
+                            return eventDate >= today;
+                        });
+                        pastEvents = data.event.filter(event => {
+                            const eventDate = new Date(event.startDate);
+                            return eventDate < today;
+                        });
+                        let rows = '';
+                        if(upcomingEvents.length == 0){
+                            $('#tblUpcomingEvents').hide();
+                            $('#noUpcomingEvents').show();
+                        }
+                        else{
+                            $('#tblUpcomingEvents').show();
+                            $('#noUpcomingEvents').hide();
+                        }
+                        if(pastEvents.length == 0){
+                            $('#tblPastEvents').hide();
+                            $('#noPastEvents').show();
+                        }
+                        else{
+                            $('#tblPastEvents').show();
+                            $('#noPastEvents').hide();
+                        }
+                        $('#table-body-pastEvents').html('');
+                        $('#table-body-upcomingEvents').html('');
+                        const upcomingEventsTableBody = document.getElementById('table-body-upcomingEvents');
+                        upcomingEvents.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td style='display:none'>${item.id == undefined? 0: item.id}</td>
+                                <td><a href="#" class="event-link" onclick="handleEventClick(${item.id == undefined? 0: item.id})">${item.eventName}</a></td>
+                                <td>${item.location}</td>
+                                <td>${item.organizer}</td>
+                                <td>${item.startDate}</td>
+                                <td>${item.endDate}</td>
+                                <td>${item.ticketsLeft}</td>                                    
+                                <td>${item.ticketPrice}  tokens</td>
+                            `;
+                            upcomingEventsTableBody.appendChild(row);
+                            
+                        });
+
+                        rows = '';
+                        pastEvents.forEach(item => {
+                            rows += `<tr>
+                                        <td>${item.eventName}</td>
+                                        <td>${item.location}</td>
+                                        <td>${item.organizer}</td>
+                                        <td>${item.startDate}</td>
+                                        <td>${item.endDate}</td>
+                                        <td>${item.ticketsLeft}</td>                                    
+                                        <td>${item.ticketPrice}  tokens</td>
+                                    </tr>`;
+                        });
+                        $('#table-body-pastEvents').html(rows);
+                }
+                },
+                error: function(err) {
+                    console.error('Error fetching data:', err);
+                }
+            });
+
+        }
+        
+        function GetTickets(){
+            if(accounts == undefined){
+                $('#lblConnectWallet').show();
+                return;
+            }
+            else{       
+                $.ajax({
+                    url: '/list-tickets',
+                    method: 'GET',
+                    success: function(data) {
+                        if(data.ticket == null){
+                            $('#tblResale').hide();
+                            $('#noRegisteredEvents').show();
+                            $('#resaleForm').hide();
+                        }
+                        if(data.ticket != null){
+                        
+                            tickets = data.ticket.filter(x =>  x.creator == accounts[0].address);
+                            let rows = '';
+                            if(tickets.length == 0){
+                                $('#tblResale').hide();
+                                $('#noRegisteredEvents').show();                               
+                            }
+                            else{
+                                $('#tblResale').show();
+                                $('#noRegisteredEvents').hide();
+                            }
+                            $('#resaleForm').hide();
+                            $('#registeredEventsTableBody').html('');
+                            const ticketsTableBody = document.getElementById('registeredEventsTableBody');
+                            tickets.forEach(item => {
+                                const row = document.createElement('tr');
+                                var event;
+                                event = upcomingEvents.filter(x => x.eventName == item.owner)[0];
+                                
+                                row.innerHTML = `
+                                    <td style='display:none'>${item.id == undefined? 0 : item.id}</td>
+                                    <td><a href="#" class="event-link" onclick="handleTicketEventClick(${item.id == undefined? 0 : item.id})">${event.eventName}</a></td>
+                                    <td>${event.startDate}</td>
+                                    <td>${event.endDate}</td>
+                                    <td>${event.location}</td>
+                                    <td>${event.organizer}</td>
+                                    `;
+                                    ticketsTableBody.appendChild(row);
+                                
+                            });
+
+                    }
+                    },
+                    error: function(err) {
+                        console.error('Error fetching data:', err);
+                    }
+                });
+            }
+
+        }
+
+        function ShowHideDiv(divId) {
+                        $('#divLanding').hide();
+                        $('#divUpcomingevents').hide();
+                        $('#divpastevents').hide();
+                        $('#divregistration').hide();
+                        $('#divResale').hide();
+                        $('#' + divId).show();
+                        $("#registerEventButton").show();
+                        $("#btnPurchaseTicket").hide();
+                        if(divId == 'divResale'){
+                            GetTickets();
+                            $('resaleForm').hide();
+                        }
+                        if(divId == 'divregistration'){
+                            $('#registrationForm')[0].reset();
+                        }
+             }
+        
+        btnConnectWallet.onclick = async () => {
+            const chainId = 'cosmos';
+            const rpcEndpoint = "http://localhost:26657"; // Local node's RPC endpoint
+            try{
+
+                        // Enable Keplr for the local chain
+                await window.keplr.experimentalSuggestChain({
+                    chainId,
+                    chainName: "Event Chain",
+                    rpc: rpcEndpoint,
+                    rest: "http://localhost:1317", // Replace with your REST endpoint if available
+                    bip44: {
+                    coinType: 118,
+                    },
+                    bech32Config: {
+                    bech32PrefixAccAddr: "cosmos",
+                    bech32PrefixAccPub: "cosmospub",
+                    bech32PrefixValAddr: "cosmosvaloper",
+                    bech32PrefixValPub: "cosmosvaloperpub",
+                    bech32PrefixConsAddr: "cosmosvalcons",
+                    bech32PrefixConsPub: "cosmosvalconspub",
+                    },
+                    currencies: [
+                    {
+                        coinDenom: "token",
+                        coinMinimalDenom: "utoken",
+                        coinDecimals: 6,
+                    },
+                    ],
+                    feeCurrencies: [
+                    {
+                        coinDenom: "token",
+                        coinMinimalDenom: "utoken",
+                        coinDecimals: 6,
+                    },
+                    ],
+                    stakeCurrency: {
+                    coinDenom: "token",
+                    coinMinimalDenom: "utoken",
+                    coinDecimals: 6,
+                    },
+                });
+
+                await window.keplr.enable(chainId);
+                offlineSigner = window.keplr.getOfflineSigner(chainId);
+                accounts = await offlineSigner.getAccounts();
+
+                $('#btnConnectWallet').text('Wallet Connected').prop('disabled', true);
+                //setAddress(accounts[0].address);
+                } catch (err) {
+                //setError("Failed to connect to Keplr wallet");
+                console.error(err);
+                }
+
+        }
+
+        let selectedEventName; // Variable to store the selected event ID
+
+        function handleEventClick(eventId) {
+            selectedEventId = eventId; // Store the event ID
+            console.log(`Selected Event ID: ${selectedEventId}`);
+
+            // Hide the div you want to hide, for example:
+            ShowHideDiv('divregistration')
+            GetEvent(selectedEventId);
+            // Optionally, show another div or perform other actions
+            // document.getElementById('divEventDetails').style.display = 'block';
+        }
+
+        document.getElementById('registerEventButton').onclick = function() {
+            if(accounts == undefined){
+                $('#lblConnectWallet').show();
+                return;
+            }
+            else{
+                const eventName = document.getElementById('name').value;
+                const eventDescription = document.getElementById('description').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const location = document.getElementById('location').value;
+                const ticketsCount = document.getElementById('ticketsCount').value;
+                const price = document.getElementById('price').value;
+                const organizer = document.getElementById('organizer').value;
+                const addressInfo = accounts[0].address;
+
+                const eventData = {
+                    name: eventName,
+                    description: eventDescription,
+                    startDate: startDate,
+                    endDate: endDate,
+                    location: location,
+                    ticketsCount: ticketsCount,
+                    price: price,
+                    organizer: organizer,
+                    info: addressInfo
+                };
+
+                // Send the data to the Go backend
+                fetch('/register-event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(eventData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Event Registered Successfully');
+                    ShowHideDiv('divLanding');
+                    UpcomingEvents();
+                    console.log('Success:', data);
+                    // You can display a success message or redirect the user here
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        };
+   
+        document.getElementById('btnPurchaseTicket').onclick = function() {
+            if(accounts == undefined){
+                $('#lblConnectWallet').show();
+                return;
+            }
+            else{
+       
+                const purchaseTicket = {
+                    amount: document.getElementById('price').value,
+                    eventId: document.getElementById('eventId').value,
+                    purchaser: accounts[0].address
+                };
+
+                // Send the data to the Go backend
+                fetch('/purchase-ticket', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(purchaseTicket),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket Purchased sucessfully');
+                    ShowHideDiv('divLanding');
+                    UpcomingEvents();
+                    GetTickets();
+                    console.log('Success:', data);
+                    // You can display a success message or redirect the user here
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+    };
+   
+        function handleTicketEventClick(ticketId){
+            var ticket;
+            if(ticketId == 0)
+                ticket = tickets[0];
+            else
+                ticket = tickets.filter(x => x.id == ticketId)[0]
+
+            var event = upcomingEvents.filter(x=> x.eventName == ticket.owner)[0];
+            $('#resaleForm').show();
+            document.getElementById('eventName').value = ticket.owner;
+            document.getElementById('ticketEventId').value = event.Id == undefined? 0 : event.Id;
+            document.getElementById('ticketId').value = ticketId;
+            document.getElementById('resellAmount').value = event.ticketPrice;
+            
+        }
+   
+        document.getElementById('btnResellTicket').onclick = function() {
+            if(accounts == undefined){
+                $('#lblConnectWallet').show();
+                return;
+            }
+            else{
+       
+                const reSellTicket = {
+                    amount: document.getElementById('resellAmount').value,
+                    eventId: document.getElementById('ticketEventId').value,
+                    purchaser: document.getElementById('purchaserAddress').value,
+                    lender: accounts[0].address,
+                    id: document.getElementById('ticketId').value
+                };
+
+                // Send the data to the Go backend
+                fetch('/resell-ticket', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(reSellTicket),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket Purchased sucessfully');
+                    ShowHideDiv('divLanding');
+                    UpcomingEvents();
+                    GetTickets();
+                    console.log('Success:', data);
+                    // You can display a success message or redirect the user here
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+    };
+   
+   </script>
+
+</body>
+</html>

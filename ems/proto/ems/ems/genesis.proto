@@ -1,0 +1,17 @@
+syntax = "proto3";
+package ems.ems;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "ems/ems/params.proto";
+
+option go_package = "ems/x/ems/types";
+
+// GenesisState defines the ems module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

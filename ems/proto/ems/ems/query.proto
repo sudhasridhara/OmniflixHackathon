@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package ems.ems;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "ems/ems/params.proto";
+import "ems/ems/event.proto";
+import "ems/ems/ticket.proto";
+
+option go_package = "ems/x/ems/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/ems/ems/params";
+  
+  }
+  
+  // Queries a list of GetEvent items.
+  rpc GetEvent (QueryGetEventRequest) returns (QueryGetEventResponse) {
+    option (google.api.http).get = "/ems/ems/get_event/{id}";
+  
+  }
+  
+  // Queries a list of ListEvent items.
+  rpc ListEvent (QueryListEventRequest) returns (QueryListEventResponse) {
+    option (google.api.http).get = "/ems/ems/list_event";
+  
+  }
+  
+  // Queries a list of GetTicket items.
+  rpc GetTicket (QueryGetTicketRequest) returns (QueryGetTicketResponse) {
+    option (google.api.http).get = "/ems/ems/get_ticket/{id}";
+  
+  }
+  
+  // Queries a list of ListTicket items.
+  rpc ListTicket (QueryListTicketRequest) returns (QueryListTicketResponse) {
+    option (google.api.http).get = "/ems/ems/list_ticket";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetEventRequest {
+  uint64 id = 1;
+}
+
+message QueryGetEventResponse {
+  Event event = 1;
+}
+
+message QueryListEventRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryListEventResponse {
+  repeated Event                                  event      = 1[(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetTicketRequest {
+  uint64 id = 1;
+}
+
+message QueryGetTicketResponse {
+  Ticket ticket = 1;
+}
+
+message QueryListTicketRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryListTicketResponse {
+   repeated Ticket                                 ticket     = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

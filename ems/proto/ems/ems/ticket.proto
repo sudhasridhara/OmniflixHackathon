@@ -1,0 +1,12 @@
+syntax = "proto3";
+package ems.ems;
+
+option go_package = "ems/x/ems/types";
+
+message Ticket {
+  
+  uint64 eventid = 1; 
+  string owner = 2; 
+  string creator = 3; 
+  uint64 id = 4; 
+}

@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package ems.ems;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "ems/ems/params.proto";
+
+option go_package = "ems/x/ems/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams   (MsgUpdateParams  ) returns (MsgUpdateParamsResponse  );
+  rpc CreateEvent    (MsgCreateEvent   ) returns (MsgCreateEventResponse   );
+  rpc UpdateEvent    (MsgUpdateEvent   ) returns (MsgUpdateEventResponse   );
+  rpc DeleteEvent    (MsgDeleteEvent   ) returns (MsgDeleteEventResponse   );
+  rpc PurchaseTicket (MsgPurchaseTicket) returns (MsgPurchaseTicketResponse);
+  rpc ResaleTicket   (MsgResaleTicket  ) returns (MsgResaleTicketResponse  );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                 "authority";
+  option           (amino.name) = "ems/x/ems/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgCreateEvent {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          =  1;
+  string eventName        =  2;
+  string eventDescription =  3;
+  string startDate        =  4;
+  string endDate          =  5;
+  string location         =  6;
+  uint64 numFtTickets     =  7;
+  string organizer        =  8;
+  uint64 ticketPrice      =  9;
+  uint64 ticketsLeft      = 10;
+}
+
+message MsgCreateEventResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateEvent {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          =  1;
+  string eventName        =  2;
+  string eventDescription =  3;
+  string startDate        =  4;
+  string endDate          =  5;
+  string location         =  6;
+  uint64 numFtTickets     =  7;
+  string organizer        =  8;
+  uint64 ticketPrice      =  9;
+  uint64 ticketsLeft      = 10;
+  uint64 id               = 11;
+}
+
+message MsgUpdateEventResponse {
+  uint64 id = 1;
+}
+
+message MsgDeleteEvent {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgDeleteEventResponse {}
+
+message MsgPurchaseTicket {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string amount    = 2;
+  uint64 eventId   = 3;
+  string purchaser = 4;
+}
+
+message MsgPurchaseTicketResponse {}
+
+message MsgResaleTicket {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string amount    = 2;
+  uint64 eventId   = 3;
+  string purchaser = 4;
+  string lender    = 5;
+  uint64 ticketId  = 6;
+}
+
+message MsgResaleTicketResponse {}
+
